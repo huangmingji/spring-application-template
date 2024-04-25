@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.stargazer.springapplicationtemplate.repositories.IAccountRepository">
+
+  <insert id="insert" parameterType="com.stargazer.springapplicationtemplate.entities.Account">
+    INSERT INTO `account` 
+    (`id`, `username`, `password`, `secretKey`, `creatorId`, `creationTime`, `lastModifierId`, `lastModificationTime`) 
+    VALUES 
+    (#{id},#{username},#{password},#{secretKey},#{creatorId},#{creationTime},#{lastModifierId},#{lastModificationTime})
+  </insert>
+
+  <update id="update" parameterType="com.stargazer.springapplicationtemplate.entities.Account">
+    UPDATE `account` SET 
+    `password` = #{password}, `secretKey` = #{secretKey}, `lastModifierId` = #{lastModifierId}, `lastModificationTime` = #{lastModificationTime} 
+    WHERE `id` = #{id}
+  </update>
+
+</mapper>
