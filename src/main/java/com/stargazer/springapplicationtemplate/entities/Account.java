@@ -1,9 +1,10 @@
 package com.stargazer.springapplicationtemplate.entities;
 
 import java.io.Serializable;
-import java.sql.Date;
 
-public class Account implements Serializable {
+import com.stargazer.springapplicationtemplate.utils.EntityBase;
+
+public class Account extends EntityBase implements Serializable {
 
     public Account(long id, String username, String password) {
         this.id = id;
@@ -18,14 +19,6 @@ public class Account implements Serializable {
     private String password;
 
     private String secretKey;
-
-    private long creatorId;
-
-    private Date creationTime;
-
-    private long lastModifierId;
-
-    private Date lastModificationTime;
 
     public long getId() {
         return id;
@@ -57,37 +50,5 @@ public class Account implements Serializable {
 
     public void setSecretKey(String secretKey) {
         this.secretKey = secretKey;
-    }
-
-    public long getCreatorId() {
-        return creatorId;
-    }
-
-    public void setCreatorId(long creatorId) {
-        this.creatorId = creatorId;
-    }
-
-    public Date getCreationTime() {
-        return creationTime;
-    }
-
-    public void setCreationTime(Date creationTime) {
-        this.creationTime = creationTime;
-    }
-    
-    public long getLastModifierId() {
-        return lastModifierId;
-    }
-
-    public void setLastModifierId(long lastModifierId) {
-        this.lastModifierId = lastModifierId;
-    }
-
-    public Date getLastModificationTime() {
-        return lastModificationTime;
-    }
-
-    public void setLastModificationTime(Date lastModificationTime) {
-        this.lastModificationTime = lastModificationTime;
     }
 }
