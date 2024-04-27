@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.stargazer.springapplicationtemplate.repositories.IUserRepository">
+
+  <select id="findByAccount" parameterType="java.lang.String" resultType="com.stargazer.springapplicationtemplate.domain.User">
+    SELECT * FROM `user` WHERE `account` = #{account}
+  </select>
+
+  <insert id="insert" parameterType="com.stargazer.springapplicationtemplate.domain.User">
+    INSERT INTO `user` 
+    (`id`, `account`, `password`, `secret_key`, `creator_id`, `creation_time`, `last_modifier_id`, `last_modification_time`) 
+    VALUES 
+    (#{id},#{account},#{password},#{secretKey},#{creatorId},#{creationTime},#{lastModifierId},#{lastModificationTime})
+  </insert>
+
+  <update id="update" parameterType="com.stargazer.springapplicationtemplate.domain.User">
+    UPDATE `user` SET 
+    `account` = #{account}, 
+    `password` = #{password},
+    `secret_key` = #{secretKey},
+    `nick_name` = #{nickName}, 
+    `avatar` = #{avatar},
+    `email` = #{email}, 
+    `email_verified` = #{emailVerified},
+    `phone_number` = #{phoneNumber}, 
+    `phone_number_verified` = #{phoneNumbertVerified},
+    `enabled` = #{enabled},
+    `lock_start_time` = #{lockStartTime},
+    `lock_end_time` = #{lockEndTime},
+    `last_modifier_id` = #{lastModifierId}, 
+    `last_modification_time` = #{lastModificationTime} 
+    WHERE`id` = #{id}
+    </update>
+
+    <select id="findById" parameterType="java.lang.Long" resultType="com.stargazer.springapplicationtemplate.domain.User">
+      SELECT * FROM `user` WHERE `id` = #{id}
+    </select>
+
+    <delete id="delete" parameterType="java.lang.Long">
+      DELETE FROM `user` WHERE `id` = #{id}
+    </delete>
+
+    <select id="findList" resultType="com.stargazer.springapplicationtemplate.domain.User">
+      SELECT * FROM `user`
+    </select>
+</mapper>

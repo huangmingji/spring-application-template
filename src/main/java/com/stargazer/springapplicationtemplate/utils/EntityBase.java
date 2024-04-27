@@ -1,16 +1,16 @@
 package com.stargazer.springapplicationtemplate.utils;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 public class EntityBase {
 
     private long creatorId;
 
-    private Date creationTime;
+    private LocalDateTime creationTime = LocalDateTime.now();
 
     private long lastModifierId;
 
-    private Date lastModificationTime;
+    private LocalDateTime lastModificationTime = LocalDateTime.now();
 
     public long getCreatorId() {
         return creatorId;
@@ -20,11 +20,11 @@ public class EntityBase {
         this.creatorId = creatorId;
     }
 
-    public Date getCreationTime() {
+    public LocalDateTime getCreationTime() {
         return creationTime;
     }
 
-    public void setCreationTime(Date creationTime) {
+    public void setCreationTime(LocalDateTime creationTime) {
         this.creationTime = creationTime;
     }
 
@@ -36,11 +36,11 @@ public class EntityBase {
         this.lastModifierId = lastModifierId;
     }
 
-    public Date getLastModificationTime() {
+    public LocalDateTime getLastModificationTime() {
         return lastModificationTime;
     }
 
-    public void setLastModificationTime(Date lastModificationTime) {
+    public void setLastModificationTime(LocalDateTime lastModificationTime) {
         this.lastModificationTime = lastModificationTime;
     }
 }

@@ -14,6 +14,10 @@ public class SnowflakeIdGenerator {
     private final long workerId; // 工作节点ID
     private final AtomicInteger sequence; // 序列号（原子整数）
 
+    public static SnowflakeIdGenerator getInstance() {
+        return new SnowflakeIdGenerator(1, 1, 1);
+    }
+
     /**
      * 雪花ID生成器
      * 41位的时间戳（毫秒级，可使用约69年）

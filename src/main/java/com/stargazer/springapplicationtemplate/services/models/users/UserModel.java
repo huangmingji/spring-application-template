@@ -1,8 +1,30 @@
-package com.stargazer.springapplicationtemplate.interfaces.dtos;
+package com.stargazer.springapplicationtemplate.services.models.users;
 
-public class UserDto {
+import java.time.LocalDateTime;
+
+public class UserModel {
 
     private long id;
+
+    private String account;
+
+    private String nickName;
+
+    private String avatar;
+
+    private String email;
+
+    private boolean emailVerified;
+
+    private String phoneNumber;
+
+    private boolean phoneNumbertVerified;
+
+    private boolean enabled;
+
+    private LocalDateTime lockStartTime;
+
+    private LocalDateTime lockEndTime;
 
     public long getId() {
         return id;
@@ -12,17 +34,13 @@ public class UserDto {
         this.id = id;
     }
 
-    private String name;
-
-    public String getName() {
-        return name;
+    public String getAccount() {
+        return account;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setAccount(String account) {
+        this.account = account;
     }
-
-    private String nickName;
 
     public String getNickName() {
         return nickName;
@@ -32,8 +50,6 @@ public class UserDto {
         this.nickName = nickName;
     }
 
-    private String avatar;
-
     public String getAvatar() {
         return avatar;
     }
@@ -41,8 +57,6 @@ public class UserDto {
     public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
-
-    private String email;
 
     public String getEmail() {
         return email;
@@ -52,8 +66,6 @@ public class UserDto {
         this.email = email;
     }
 
-    private boolean emailVerified;
-
     public boolean isEmailVerified() {
         return emailVerified;
     }
@@ -61,8 +73,6 @@ public class UserDto {
     public void setEmailVerified(boolean emailVerified) {
         this.emailVerified = emailVerified;
     }
-
-    private String phoneNumber;
 
     public String getPhoneNumber() {
         return phoneNumber;
@@ -72,13 +82,35 @@ public class UserDto {
         this.phoneNumber = phoneNumber;
     }
 
-    private boolean phoneNumbertVerified;
-
     public boolean isPhoneNumbertVerified() {
         return phoneNumbertVerified;
     }
 
     public void setPhoneNumbertVerified(boolean phoneNumbertVerified) {
         this.phoneNumbertVerified = phoneNumbertVerified;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public LocalDateTime getLockStartTime() {
+        return lockStartTime;
+    }
+
+    public void setLockStartTime(LocalDateTime lockStartTime) {
+        this.lockStartTime = lockStartTime;
+    }
+
+    public LocalDateTime getLockEndTime() {
+        return lockEndTime;
+    }
+
+    public void setLockEndTime(LocalDateTime lockEndTime) {
+        this.lockEndTime = lockEndTime;
     }
 }
