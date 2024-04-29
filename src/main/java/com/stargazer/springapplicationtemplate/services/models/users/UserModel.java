@@ -1,8 +1,9 @@
 package com.stargazer.springapplicationtemplate.services.models.users;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class UserModel {
+public class UserModel implements Serializable {
 
     private long id;
 

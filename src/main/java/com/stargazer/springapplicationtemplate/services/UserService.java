@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -103,6 +104,7 @@ public class UserService implements IUserServices {
     }
 
     @Override
+    @CacheEvict(value = "user", key = "#id")
     public void delete(long id) {
         userRepository.delete(id);        
     }
@@ -118,6 +120,7 @@ public class UserService implements IUserServices {
     }
 
     @Override
+    @CacheEvict(value = "users", key = "#model.id")
     public UserModel updateAvatar(UpdateAvatarModel model) {
         User user = userRepository.findById(model.getId());
         if(user == null) {
