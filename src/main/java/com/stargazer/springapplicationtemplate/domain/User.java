@@ -21,7 +21,7 @@ public class User extends EntityBase implements Serializable {
 
     private String nickName;
 
-    private String avatar;
+    private String avatar = "";
 
     private String email;
 

@@ -5,6 +5,8 @@ import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageHelper;
@@ -106,6 +108,7 @@ public class UserService implements IUserServices {
     }
 
     @Override
+    @Cacheable(value = "users", key = "#id")
     public UserModel findUserById(long id) {
         User user = userRepository.findById(id);
         if(user == null) {
@@ -126,6 +129,7 @@ public class UserService implements IUserServices {
     }
 
     @Override
+    @CacheEvict(value = "users", key = "#id")
     public UserModel updateUser(long id, CreateOrUpdateUserModel model) throws NoSuchAlgorithmException, InvalidKeySpecException {
         if(model.getAccount() == null || model.getAccount().isEmpty())
         {

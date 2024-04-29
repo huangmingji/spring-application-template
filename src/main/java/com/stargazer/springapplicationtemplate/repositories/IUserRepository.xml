@@ -7,10 +7,43 @@
   </select>
 
   <insert id="insert" parameterType="com.stargazer.springapplicationtemplate.domain.User">
-    INSERT INTO `user` 
-    (`id`, `account`, `password`, `secret_key`, `creator_id`, `creation_time`, `last_modifier_id`, `last_modification_time`) 
-    VALUES 
-    (#{id},#{account},#{password},#{secretKey},#{creatorId},#{creationTime},#{lastModifierId},#{lastModificationTime})
+    INSERT INTO `user` (
+      `id`,
+      `account`,
+      `password`,
+      `secret_key`,
+      `nick_name`,
+      `avatar`,
+      `email`,
+      `email_verified`,
+      `phone_number`,
+      `phone_number_verified`,
+      `enabled`,
+      `lock_start_time`,
+      `lock_end_time`,
+      `creator_id`,
+      `creation_time`,
+      `last_modification_time`,
+      `last_modifier_id`
+    ) VALUES (
+      #{id},
+      #{account},
+      #{password},
+      #{secretKey},
+      #{nickName},
+      #{avatar},
+      #{email},
+      #{emailVerified},
+      #{phoneNumber},
+      #{phoneNumbertVerified},
+      #{enabled},
+      #{lockStartTime},
+      #{lockEndTime},
+      #{creatorId},
+      #{creationTime},
+      #{lastModificationTime},
+      #{lastModifierId}
+    )
   </insert>
 
   <update id="update" parameterType="com.stargazer.springapplicationtemplate.domain.User">

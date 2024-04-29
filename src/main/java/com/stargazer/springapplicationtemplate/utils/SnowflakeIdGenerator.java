@@ -3,6 +3,8 @@ package com.stargazer.springapplicationtemplate.utils;
 import java.time.Instant;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.springframework.beans.factory.annotation.Value;
+
 /**
  * 雪花ID生成器
  * @author Stargazer
@@ -10,12 +12,19 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class SnowflakeIdGenerator {
     private static final long EPOCH_START = Instant.parse("2024-01-01T00:00:00Z").toEpochMilli(); // 起始时间戳，可根据实际情况调整
 
-    private final long dataCenterId; // 数据中心ID
-    private final long workerId; // 工作节点ID
-    private final AtomicInteger sequence; // 序列号（原子整数）
+    @Value("${snowflakeid.datacenterid}")
+    private long dataCenterId; // 数据中心ID
+
+    @Value("${snowflakeid.workerid}")
+    private long workerId; // 工作节点ID
+
+    @Value("${snowflakeid.sequence}")
+    private int sequence;
+
+    private final AtomicInteger atomicInteger; // 序列号（原子整数）
 
     public static SnowflakeIdGenerator getInstance() {
-        return new SnowflakeIdGenerator(1, 1, 1);
+        return new SnowflakeIdGenerator();
     }
 
     /**
@@ -25,7 +34,7 @@ public class SnowflakeIdGenerator {
      * @param workerId 12位的工作节点ID（最大支持4096个工作节点）
      * @param sequence 12位的序列号（每个节点每毫秒最多生成4096个ID）
      */
-    public SnowflakeIdGenerator(int dataCenterId, int workerId, int sequence) {
+    public SnowflakeIdGenerator() {
         if (dataCenterId < 0 || dataCenterId > (1 << 10) - 1) {
             throw new IllegalArgumentException("Invalid data center ID");
         }
@@ -36,9 +45,7 @@ public class SnowflakeIdGenerator {
         {
             throw new IllegalArgumentException("Invalid sequence");
         }
-        this.dataCenterId = dataCenterId;
-        this.workerId = workerId;
-        this.sequence = new AtomicInteger(sequence);
+        this.atomicInteger = new AtomicInteger(sequence);
     }
 
     /**
@@ -53,7 +60,7 @@ public class SnowflakeIdGenerator {
         }
 
         long timestamp = currentTimeMillis - EPOCH_START;
-        long sequenceBits = sequence.incrementAndGet() & ((1 << 12) - 1); // 保证序列号在范围内
+        long sequenceBits = atomicInteger.incrementAndGet() & ((1 << 12) - 1); // 保证序列号在范围内
 
         // 组合各个部分
         return ((timestamp << (12 + 10)) // 时间戳左移
