@@ -72,7 +72,11 @@ public class UserMapperTests {
     @Order(3)
     public void findUserTest() {
         User user = userRepository.findByAccount("admin");
-        log.info("find test");
+        if (user == null) {
+            log.info("User not found");
+            return;
+        }
+        log.info("find test" + user.getNickName());
     }
 
     @Test
