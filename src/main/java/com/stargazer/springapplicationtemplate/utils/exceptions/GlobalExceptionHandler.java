@@ -4,117 +4,74 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-@ControllerAdvice
+@RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class); 
+    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleException(Exception ex) {
-        log.error(ex.getMessage(), ex);
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            ExceptionDetail detail = new ExceptionDetail();
-            detail.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
-            detail.setMessage(ex.getMessage());
-            return new ResponseEntity<>(mapper.writeValueAsString(detail), HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    @ExceptionHandler(DataNotExistsException.class)
+    public ResponseEntity<ExceptionDetail> handleDataNotExistsException(DataNotExistsException ex) {
+        log.warn(ex.getMessage());
+        ExceptionDetail detail = new ExceptionDetail();
+        detail.setCode(HttpStatus.NOT_FOUND.value());
+        detail.setMessage(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(detail);
     }
 
     @ExceptionHandler(DataAlreadyExistsException.class)
-    public ResponseEntity<String> handleDataAlreadyExistsException(DataAlreadyExistsException ex) {
-        log.error(ex.getMessage(), ex);
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            ExceptionDetail detail = new ExceptionDetail();
-            detail.setCode(HttpStatus.BAD_REQUEST.value());
-            detail.setMessage(ex.getMessage());
-            // 返回400 Bad Request状态码及错误信息
-            return new ResponseEntity<>(mapper.writeValueAsString(detail), HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @ExceptionHandler(DataNotExistsException.class)
-    public ResponseEntity<String> handleDataNotExistsException(DataNotExistsException ex) {
-        log.error(ex.getMessage(), ex);
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            ExceptionDetail detail = new ExceptionDetail();
-            detail.setCode(HttpStatus.BAD_REQUEST.value());
-            detail.setMessage(ex.getMessage());
-            // 返回400 Bad Request状态码及错误信息
-            return new ResponseEntity<>(mapper.writeValueAsString(detail), HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<ExceptionDetail> handleDataAlreadyExistsException(DataAlreadyExistsException ex) {
+        log.warn(ex.getMessage());
+        ExceptionDetail detail = new ExceptionDetail();
+        detail.setCode(HttpStatus.CONFLICT.value());
+        detail.setMessage(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(detail);
     }
 
     @ExceptionHandler(VerifyPasswordException.class)
-    public ResponseEntity<String> handleVerifyPasswordException(VerifyPasswordException ex) {
-        log.error(ex.getMessage(), ex);
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            ExceptionDetail detail = new ExceptionDetail();
-            detail.setCode(HttpStatus.BAD_REQUEST.value());
-            detail.setMessage(ex.getMessage());
-            // 返回400 Bad Request状态码及错误信息
-            return new ResponseEntity<>(mapper.writeValueAsString(detail), HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<ExceptionDetail> handleVerifyPasswordException(VerifyPasswordException ex) {
+        log.warn(ex.getMessage());
+        ExceptionDetail detail = new ExceptionDetail();
+        detail.setCode(HttpStatus.UNAUTHORIZED.value());
+        detail.setMessage(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(detail);
     }
 
     @ExceptionHandler(ParameterEmptyException.class)
-    public ResponseEntity<String> handleParameterEmptyException(ParameterEmptyException ex) {
-        log.error(ex.getMessage(), ex);
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            ExceptionDetail detail = new ExceptionDetail();
-            detail.setCode(HttpStatus.BAD_REQUEST.value());
-            detail.setMessage(ex.getMessage());
-            // 返回400 Bad Request状态码及错误信息
-            return new ResponseEntity<>(mapper.writeValueAsString(detail), HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<ExceptionDetail> handleParameterEmptyException(ParameterEmptyException ex) {
+        log.warn(ex.getMessage());
+        ExceptionDetail detail = new ExceptionDetail();
+        detail.setCode(HttpStatus.BAD_REQUEST.value());
+        detail.setMessage(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(detail);
     }
 
     @ExceptionHandler(ParameterNullException.class)
-    public ResponseEntity<String> handleParameterNullException(ParameterNullException ex) {
-        log.error(ex.getMessage(), ex);
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            ExceptionDetail detail = new ExceptionDetail();
-            detail.setCode(HttpStatus.BAD_REQUEST.value());
-            detail.setMessage(ex.getMessage());
-            // 返回400 Bad Request状态码及错误信息
-            return new ResponseEntity<>(mapper.writeValueAsString(detail), HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<ExceptionDetail> handleParameterNullException(ParameterNullException ex) {
+        log.warn(ex.getMessage());
+        ExceptionDetail detail = new ExceptionDetail();
+        detail.setCode(HttpStatus.BAD_REQUEST.value());
+        detail.setMessage(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(detail);
     }
 
     @ExceptionHandler(ParameterInvalidException.class)
-    public ResponseEntity<String> handleParameterInvalidException(ParameterInvalidException ex) {
+    public ResponseEntity<ExceptionDetail> handleParameterInvalidException(ParameterInvalidException ex) {
+        log.warn(ex.getMessage());
+        ExceptionDetail detail = new ExceptionDetail();
+        detail.setCode(HttpStatus.BAD_REQUEST.value());
+        detail.setMessage(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(detail);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ExceptionDetail> handleException(Exception ex) {
         log.error(ex.getMessage(), ex);
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            ExceptionDetail detail = new ExceptionDetail();
-            detail.setCode(HttpStatus.BAD_REQUEST.value());
-            detail.setMessage(ex.getMessage());
-            // 返回400 Bad Request状态码及错误信息
-            return new ResponseEntity<>(mapper.writeValueAsString(detail), HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+        ExceptionDetail detail = new ExceptionDetail();
+        detail.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        detail.setMessage("服务器内部错误");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(detail);
     }
 }
