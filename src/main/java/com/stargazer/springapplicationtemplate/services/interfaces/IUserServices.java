@@ -4,6 +4,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 
+import com.stargazer.springapplicationtemplate.controllers.models.LoginRequest;
 import com.stargazer.springapplicationtemplate.services.models.users.CreateAccountModel;
 import com.stargazer.springapplicationtemplate.services.models.users.CreateOrUpdateUserModel;
 import com.stargazer.springapplicationtemplate.services.models.users.UpdateAvatarModel;
@@ -12,6 +13,10 @@ import com.stargazer.springapplicationtemplate.services.models.users.VerifyPassw
 
 public interface IUserServices {
     
+    UserModel register(LoginRequest model) throws NoSuchAlgorithmException, InvalidKeySpecException;
+
+    UserModel login(LoginRequest model) throws NoSuchAlgorithmException, InvalidKeySpecException;
+
     UserModel createAccount(CreateAccountModel model) throws NoSuchAlgorithmException, InvalidKeySpecException;
 
     UserModel createUser(CreateOrUpdateUserModel model) throws NoSuchAlgorithmException, InvalidKeySpecException;

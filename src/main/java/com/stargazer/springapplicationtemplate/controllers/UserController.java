@@ -4,6 +4,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,18 +34,21 @@ public class UserController {
 
     @Operation(summary = "添加用户")
     @PostMapping(value = "")
+    @PreAuthorize("hasAuthority('user:create') or hasRole('ADMIN')")
     public UserModel createUser(@RequestBody @Valid CreateOrUpdateUserModel model) throws NoSuchAlgorithmException, InvalidKeySpecException {
         return userServices.createUser(model);
     }
 
     @Operation(summary = "更新用户")
     @PutMapping(value = "{id}")
+    @PreAuthorize("hasAuthority('user:update') or hasAuthority('user:update:' + #id) or hasRole('ADMIN')")
     public UserModel update(@PathVariable long id, @RequestBody @Valid CreateOrUpdateUserModel model) throws NoSuchAlgorithmException, InvalidKeySpecException {
         return userServices.updateUser(id, model);
     }
     
     @Operation(summary = "获取用户")
     @GetMapping(value = "{id}")
+    @PreAuthorize("hasAuthority('user:read') or hasAuthority('user:read:' + #id) or hasRole('ADMIN')")
     public UserModel get(@PathVariable long id)
     {
         return userServices.findUserById(id);
@@ -52,6 +56,7 @@ public class UserController {
 
     @Operation(summary = "删除用户")
     @DeleteMapping("{id}")
+    @PreAuthorize("hasAuthority('user:delete') or hasAuthority('user:delete:' + #id) or hasRole('ADMIN')")
     public void delete(@PathVariable long id)
     {
         userServices.delete(id);
@@ -59,6 +64,7 @@ public class UserController {
 
     @Operation(summary = "获取用户列表")
     @GetMapping("list")
+    @PreAuthorize("hasAuthority('user:read:list') or hasRole('ADMIN')")
     public List<UserModel> getUsersByPage(int page, int size)
     {
         return userServices.getUsersByPage(page, size);

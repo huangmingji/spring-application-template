@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.stargazer.springapplicationtemplate.repositories.IPermissionRepository">
+
+    <resultMap id="PermissionResultMap" type="com.stargazer.springapplicationtemplate.domain.Permission">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="description" column="description"/>
+    </resultMap>
+
+    <select id="findById" resultMap="PermissionResultMap">
+        SELECT id, name, description FROM permissions WHERE id = #{id}
+    </select>
+
+    <select id="findByName" resultMap="PermissionResultMap">
+        SELECT id, name, description FROM permissions WHERE name = #{name}
+    </select>
+
+    <select id="findByRoleId" resultMap="PermissionResultMap">
+        SELECT p.id, p.name, p.description 
+        FROM permissions p 
+        INNER JOIN role_permissions rp ON p.id = rp.permission_id 
+        WHERE rp.role_id = #{roleId}
+    </select>
+
+    <select id="findByUserId" resultMap="PermissionResultMap">
+        SELECT DISTINCT p.id, p.name, p.description 
+        FROM permissions p 
+        INNER JOIN role_permissions rp ON p.id = rp.permission_id 
+        INNER JOIN roles r ON rp.role_id = r.id 
+        INNER JOIN user_roles ur ON r.id = ur.role_id 
+        WHERE ur.user_id = #{userId}
+    </select>
+
+    <select id="findAll" resultMap="PermissionResultMap">
+        SELECT id, name, description FROM permissions
+    </select>
+
+    <insert id="insert" parameterType="com.stargazer.springapplicationtemplate.domain.Permission">
+        INSERT INTO permissions (id, name, description) VALUES (#{id}, #{name}, #{description})
+    </insert>
+
+    <insert id="insertRolePermission">
+        INSERT INTO role_permissions (role_id, permission_id) VALUES (#{roleId}, #{permissionId})
+    </insert>
+
+    <delete id="deleteById">
+        DELETE FROM permissions WHERE id = #{id}
+    </delete>
+
+    <delete id="deleteRolePermission">
+        DELETE FROM role_permissions WHERE role_id = #{roleId} AND permission_id = #{permissionId}
+    </delete>
+
+    <select id="existsByName" resultType="boolean">
+        SELECT COUNT(*) > 0 FROM permissions WHERE name = #{name}
+    </select>
+
+</mapper>

@@ -19,6 +19,7 @@ import com.stargazer.springapplicationtemplate.services.models.users.UpdateAvata
 import com.stargazer.springapplicationtemplate.services.models.users.UserMapper;
 import com.stargazer.springapplicationtemplate.services.models.users.UserModel;
 import com.stargazer.springapplicationtemplate.services.models.users.VerifyPasswordModel;
+import com.stargazer.springapplicationtemplate.controllers.models.LoginRequest;
 import com.stargazer.springapplicationtemplate.utils.SnowflakeIdGenerator;
 import com.stargazer.springapplicationtemplate.utils.exceptions.DataAlreadyExistsException;
 import com.stargazer.springapplicationtemplate.utils.exceptions.DataNotExistsException;
@@ -32,6 +33,50 @@ public class UserService implements IUserServices {
 
     public UserService(IUserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    @Override
+    public UserModel register(LoginRequest model) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        if(model.getAccount() == null || model.getAccount().isEmpty())
+        {
+            throw new ParameterEmptyException("账户名称不能为空");
+        }
+        if(model.getPassword() == null || model.getPassword().isEmpty())
+        {
+            throw new ParameterEmptyException("密码不能为空");
+        }
+        User user = userRepository.findByAccount(model.getAccount());
+        if(user != null)
+        {
+            throw new DataAlreadyExistsException("用户名已存在");
+        }
+
+        user = new User();
+        user.setId(SnowflakeIdGenerator.getInstance().nextId());
+        user.setAccount(model.getAccount());
+        user.setPassword(model.getPassword());
+        user.setEnabled(true);
+        userRepository.insert(user);
+        return UserMapper.toDto(user);
+    }
+
+    @Override
+    public UserModel login(LoginRequest model) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        if(model.getAccount() == null || model.getAccount().isEmpty())
+        {
+            throw new ParameterEmptyException("账户名称不能为空");
+        }
+        if(model.getPassword() == null || model.getPassword().isEmpty())
+        {
+            throw new ParameterEmptyException("密码不能为空");
+        }
+        User user = userRepository.findByAccount(model.getAccount());
+        if(user == null)
+        {
+            throw new DataNotExistsException("账户不存在");
+        }
+        user.VerifyPassword(model.getPassword());
+        return UserMapper.toDto(user);
     }
 
     @Override

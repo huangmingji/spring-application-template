@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.stargazer.springapplicationtemplate.repositories.IRoleRepository">
+
+    <resultMap id="RoleResultMap" type="com.stargazer.springapplicationtemplate.domain.Role">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="description" column="description"/>
+    </resultMap>
+
+    <select id="findById" resultMap="RoleResultMap">
+        SELECT id, name, description FROM roles WHERE id = #{id}
+    </select>
+
+    <select id="findByName" resultMap="RoleResultMap">
+        SELECT id, name, description FROM roles WHERE name = #{name}
+    </select>
+
+    <select id="findByUserId" resultMap="RoleResultMap">
+        SELECT r.id, r.name, r.description 
+        FROM roles r 
+        INNER JOIN user_roles ur ON r.id = ur.role_id 
+        WHERE ur.user_id = #{userId}
+    </select>
+
+    <select id="findAll" resultMap="RoleResultMap">
+        SELECT id, name, description FROM roles
+    </select>
+
+    <insert id="insert" parameterType="com.stargazer.springapplicationtemplate.domain.Role">
+        INSERT INTO roles (id, name, description) VALUES (#{id}, #{name}, #{description})
+    </insert>
+
+    <insert id="insertUserRole">
+        INSERT INTO user_roles (user_id, role_id) VALUES (#{userId}, #{roleId})
+    </insert>
+
+    <delete id="deleteById">
+        DELETE FROM roles WHERE id = #{id}
+    </delete>
+
+    <delete id="deleteUserRole">
+        DELETE FROM user_roles WHERE user_id = #{userId} AND role_id = #{roleId}
+    </delete>
+
+    <select id="existsByName" resultType="boolean">
+        SELECT COUNT(*) > 0 FROM roles WHERE name = #{name}
+    </select>
+
+</mapper>
