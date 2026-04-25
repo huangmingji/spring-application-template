@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.stargazer.springapplicationtemplate.repositories.IFileStorageRepository">
+
+    <resultMap id="FileStorageResultMap" type="com.stargazer.springapplicationtemplate.domain.FileStorage">
+        <id property="id" column="id"/>
+        <result property="bucket" column="bucket"/>
+        <result property="originalName" column="original_name"/>
+        <result property="storedName" column="stored_name"/>
+        <result property="filePath" column="file_path"/>
+        <result property="fileSize" column="file_size"/>
+        <result property="mimeType" column="mime_type"/>
+        <result property="uploaderId" column="uploader_id"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+        <result property="creatorId" column="creator_id"/>
+        <result property="creationTime" column="creation_time"/>
+        <result property="lastModifierId" column="last_modifier_id"/>
+        <result property="lastModificationTime" column="last_modification_time"/>
+    </resultMap>
+
+    <select id="findById" resultMap="FileStorageResultMap">
+        SELECT id, bucket, original_name, stored_name, file_path, file_size, mime_type,
+               uploader_id, created_at, updated_at, creator_id, creation_time,
+               last_modifier_id, last_modification_time
+        FROM file_storage
+        WHERE id = #{id}
+    </select>
+
+    <select id="findByUploaderId" resultMap="FileStorageResultMap">
+        SELECT id, bucket, original_name, stored_name, file_path, file_size, mime_type,
+               uploader_id, created_at, updated_at, creator_id, creation_time,
+               last_modifier_id, last_modification_time
+        FROM file_storage
+        WHERE uploader_id = #{uploaderId}
+        ORDER BY created_at DESC
+    </select>
+
+    <select id="findByBucket" resultMap="FileStorageResultMap">
+        SELECT id, bucket, original_name, stored_name, file_path, file_size, mime_type,
+               uploader_id, created_at, updated_at, creator_id, creation_time,
+               last_modifier_id, last_modification_time
+        FROM file_storage
+        WHERE bucket = #{bucket}
+        ORDER BY created_at DESC
+    </select>
+
+    <select id="findAll" resultMap="FileStorageResultMap">
+        SELECT id, bucket, original_name, stored_name, file_path, file_size, mime_type,
+               uploader_id, created_at, updated_at, creator_id, creation_time,
+               last_modifier_id, last_modification_time
+        FROM file_storage
+        ORDER BY created_at DESC
+    </select>
+
+    <insert id="insert" parameterType="com.stargazer.springapplicationtemplate.domain.FileStorage">
+        INSERT INTO file_storage (id, bucket, original_name, stored_name, file_path, file_size,
+                                   mime_type, uploader_id, created_at, updated_at,
+                                   creator_id, creation_time, last_modifier_id, last_modification_time)
+        VALUES (#{id}, #{bucket}, #{originalName}, #{storedName}, #{filePath}, #{fileSize},
+                #{mimeType}, #{uploaderId}, #{createdAt}, #{updatedAt},
+                #{creatorId}, #{creationTime}, #{lastModifierId}, #{lastModificationTime})
+    </insert>
+
+    <update id="update" parameterType="com.stargazer.springapplicationtemplate.domain.FileStorage">
+        UPDATE file_storage
+        SET bucket = #{bucket},
+            original_name = #{originalName},
+            stored_name = #{storedName},
+            file_path = #{filePath},
+            file_size = #{fileSize},
+            mime_type = #{mimeType},
+            uploader_id = #{uploaderId},
+            updated_at = #{updatedAt},
+            last_modifier_id = #{lastModifierId},
+            last_modification_time = #{lastModificationTime}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM file_storage WHERE id = #{id}
+    </delete>
+
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM file_storage
+    </select>
+
+</mapper>

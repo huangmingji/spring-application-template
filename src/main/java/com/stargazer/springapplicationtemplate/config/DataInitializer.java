@@ -31,7 +31,11 @@ public class DataInitializer implements CommandLineRunner {
         "user:update:avatar",
         "user:delete",
         "auth:login",
-        "auth:register"
+        "auth:register",
+        "storage:upload",
+        "storage:read",
+        "storage:read:list",
+        "storage:delete"
     );
 
     public DataInitializer(IRoleRepository roleRepository, IPermissionRepository permissionRepository) {
