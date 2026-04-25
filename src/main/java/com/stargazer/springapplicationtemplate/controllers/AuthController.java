@@ -1,9 +1,5 @@
 package com.stargazer.springapplicationtemplate.controllers;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
-
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,10 +11,6 @@ import com.stargazer.springapplicationtemplate.controllers.models.RegisterReques
 import com.stargazer.springapplicationtemplate.services.interfaces.IUserServices;
 import com.stargazer.springapplicationtemplate.services.models.users.UserModel;
 import com.stargazer.springapplicationtemplate.utils.JwtUtils;
-import com.stargazer.springapplicationtemplate.utils.exceptions.DataAlreadyExistsException;
-import com.stargazer.springapplicationtemplate.utils.exceptions.DataNotExistsException;
-import com.stargazer.springapplicationtemplate.utils.exceptions.ParameterEmptyException;
-import com.stargazer.springapplicationtemplate.utils.exceptions.VerifyPasswordException;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -38,53 +30,23 @@ public class AuthController {
 
     @Operation(summary = "用户注册")
     @PostMapping("register")
-    public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest request) {
-        try {
-            if (request.getAccount() == null || request.getAccount().isEmpty()) {
-                return ResponseEntity.badRequest().build();
-            }
-            if (request.getPassword() == null || request.getPassword().isEmpty()) {
-                return ResponseEntity.badRequest().build();
-            }
+    public AuthResponse register(@RequestBody RegisterRequest request) {
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setAccount(request.getAccount());
+        loginRequest.setPassword(request.getPassword());
 
-            LoginRequest loginRequest = new LoginRequest();
-            loginRequest.setAccount(request.getAccount());
-            loginRequest.setPassword(request.getPassword());
+        UserModel user = userServices.register(loginRequest);
+        String token = jwtUtils.generateToken(user.getId(), user.getAccount());
 
-            UserModel user = userServices.register(loginRequest);
-            String token = jwtUtils.generateToken(user.getId(), user.getAccount());
-
-            return ResponseEntity.ok(new AuthResponse(token, user.getId(), user.getAccount(), user.getNickName()));
-        } catch (DataAlreadyExistsException e) {
-            return ResponseEntity.status(409).build();
-        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-            return ResponseEntity.status(500).build();
-        }
+        return new AuthResponse(token, user.getId(), user.getAccount(), user.getNickName());
     }
 
     @Operation(summary = "用户登录")
     @PostMapping("login")
-    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
-        try {
-            if (request.getAccount() == null || request.getAccount().isEmpty()) {
-                return ResponseEntity.badRequest().build();
-            }
-            if (request.getPassword() == null || request.getPassword().isEmpty()) {
-                return ResponseEntity.badRequest().build();
-            }
+    public AuthResponse login(@RequestBody LoginRequest request) {
+        UserModel user = userServices.login(request);
+        String token = jwtUtils.generateToken(user.getId(), user.getAccount());
 
-            UserModel user = userServices.login(request);
-            String token = jwtUtils.generateToken(user.getId(), user.getAccount());
-
-            return ResponseEntity.ok(new AuthResponse(token, user.getId(), user.getAccount(), user.getNickName()));
-        } catch (VerifyPasswordException e) {
-            return ResponseEntity.status(401).build();
-        } catch (DataNotExistsException e) {
-            return ResponseEntity.status(401).build();
-        } catch (ParameterEmptyException e) {
-            return ResponseEntity.badRequest().build();
-        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-            return ResponseEntity.status(500).build();
-        }
+        return new AuthResponse(token, user.getId(), user.getAccount(), user.getNickName());
     }
 }
