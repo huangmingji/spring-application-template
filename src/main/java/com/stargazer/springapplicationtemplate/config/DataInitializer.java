@@ -35,7 +35,17 @@ public class DataInitializer implements CommandLineRunner {
         "storage:upload",
         "storage:read",
         "storage:read:list",
-        "storage:delete"
+        "storage:delete",
+        "message:send",
+        "message:send:email",
+        "message:send:sms",
+        "message:send:batch",
+        "message:read",
+        "message:read:list",
+        "message:template:create",
+        "message:template:read",
+        "message:template:update",
+        "message:template:delete"
     );
 
     public DataInitializer(IRoleRepository roleRepository, IPermissionRepository permissionRepository) {

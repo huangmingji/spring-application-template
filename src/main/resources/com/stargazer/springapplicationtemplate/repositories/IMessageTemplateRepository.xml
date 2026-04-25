@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.stargazer.springapplicationtemplate.repositories.IMessageTemplateRepository">
+
+    <resultMap id="MessageTemplateResultMap" type="com.stargazer.springapplicationtemplate.domain.MessageTemplate">
+        <id property="id" column="id"/>
+        <result property="templateCode" column="template_code"/>
+        <result property="templateName" column="template_name"/>
+        <result property="messageType" column="message_type"/>
+        <result property="subject" column="subject"/>
+        <result property="content" column="content"/>
+        <result property="enabled" column="enabled"/>
+        <result property="description" column="description"/>
+    </resultMap>
+
+    <select id="findById" resultMap="MessageTemplateResultMap">
+        SELECT id, template_code, template_name, message_type, subject, content,
+               enabled, description
+        FROM message_templates
+        WHERE id = #{id}
+    </select>
+
+    <select id="findByCode" resultMap="MessageTemplateResultMap">
+        SELECT id, template_code, template_name, message_type, subject, content,
+               enabled, description
+        FROM message_templates
+        WHERE template_code = #{templateCode}
+    </select>
+
+    <select id="findByMessageType" resultMap="MessageTemplateResultMap">
+        SELECT id, template_code, template_name, message_type, subject, content,
+               enabled, description
+        FROM message_templates
+        WHERE message_type = #{messageType}
+        ORDER BY template_code
+    </select>
+
+    <select id="findByEnabled" resultMap="MessageTemplateResultMap">
+        SELECT id, template_code, template_name, message_type, subject, content,
+               enabled, description
+        FROM message_templates
+        WHERE enabled = #{enabled}
+        ORDER BY template_code
+    </select>
+
+    <select id="findAll" resultMap="MessageTemplateResultMap">
+        SELECT id, template_code, template_name, message_type, subject, content,
+               enabled, description
+        FROM message_templates
+        ORDER BY template_code
+    </select>
+
+    <insert id="insert" parameterType="com.stargazer.springapplicationtemplate.domain.MessageTemplate">
+        INSERT INTO message_templates (id, template_code, template_name, message_type, subject,
+                                       content, enabled, description)
+        VALUES (#{id}, #{templateCode}, #{templateName}, #{messageType}, #{subject},
+                #{content}, #{enabled}, #{description})
+    </insert>
+
+    <update id="update" parameterType="com.stargazer.springapplicationtemplate.domain.MessageTemplate">
+        UPDATE message_templates
+        SET template_code = #{templateCode},
+            template_name = #{templateName},
+            message_type = #{messageType},
+            subject = #{subject},
+            content = #{content},
+            enabled = #{enabled},
+            description = #{description}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM message_templates WHERE id = #{id}
+    </delete>
+
+    <select id="existsByCode" resultType="boolean">
+        SELECT COUNT(*) > 0 FROM message_templates WHERE template_code = #{templateCode}
+    </select>
+
+</mapper>
