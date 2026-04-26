@@ -21,21 +21,20 @@ src/main/java/com/stargazer/springapplicationtemplate/
 ├── config/           # 配置类
 │   ├── SecurityConfig.java        # 安全配置
 │   ├── StorageConfig.java         # 存储配置
-│   └── DataInitializer.java       # 数据初始化
+│   ├── DataInitializer.java       # 数据初始化
+│   └── I18nConfig.java        # 多语言配置
 ├── controllers/      # 控制器
-│   ├── AuthController.java       # 认证管理
-│   ├── UserController.java       # 用户管理
-│   ├── FileStorageController.java # 文件存储
-│   └── MessageController.java    # 消息管理
 ├── domain/           # 实体类
 ├── repositories/     # 数据访问层（MyBatis）
 ├── services/         # 服务层
 │   ├── interfaces/              # 服务接口
 │   └── models/                  # DTO/Model
 ├── filter/           # 过滤器
-│   └── JwtAuthenticationFilter.java
+│   ├── JwtAuthenticationFilter.java
+│   └── LocaleChangeInterceptor.java  # 语言切换拦截器
 └── utils/            # 工具类
     ├── JwtUtils.java            # JWT 工具
+    ├── I18nUtils.java         # 多语言工具
     └── exceptions/              # 异常处理
 ```
 
@@ -269,6 +268,41 @@ public class UserService {
     public void delete(long id) {
         userRepository.delete(id);
     }
+}
+```
+
+## 多语言支持
+
+### 支持语言
+
+| 语言 | 请求头值 |
+|------|----------|
+| 中文 | `Accept-Language: zh-CN` |
+| 英文 | `Accept-Language: en-US` |
+
+### 语言文件
+
+| 文件 | 说明 |
+|------|------|
+| `messages.properties` | 默认语言（英文） |
+| `messages_zh_CN.properties` | 中文 |
+
+### 使用方式
+
+在代码中调用 `I18nUtils`：
+
+```java
+// 简单用法
+String msg = I18nUtils.get("user.not.found");
+
+// 带参数
+String msg = I18nUtils.get("user.not.found", new Object[]{username});
+
+// 错误处理中使用
+@ExceptionHandler(DataNotExistsException.class)
+public ResponseEntity<ExceptionDetail> handleException(DataNotExistsException ex) {
+    return ResponseEntity.status(HttpStatus.NOT_FOUND)
+        .body(new ExceptionDetail(404, I18nUtils.get("data.not.exists")));
 }
 ```
 
