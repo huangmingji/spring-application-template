@@ -1,5 +1,6 @@
 package com.stargazer.springapplicationtemplate.utils.exceptions;
 
+import com.stargazer.springapplicationtemplate.utils.I18nUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,7 @@ public class GlobalExceptionHandler {
         log.warn(ex.getMessage());
         ExceptionDetail detail = new ExceptionDetail();
         detail.setCode(HttpStatus.NOT_FOUND.value());
-        detail.setMessage(ex.getMessage());
+        detail.setMessage(I18nUtils.get("data.not.exists", ex.getMessage()));
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(detail);
     }
 
@@ -26,7 +27,7 @@ public class GlobalExceptionHandler {
         log.warn(ex.getMessage());
         ExceptionDetail detail = new ExceptionDetail();
         detail.setCode(HttpStatus.CONFLICT.value());
-        detail.setMessage(ex.getMessage());
+        detail.setMessage(I18nUtils.get("data.already.exists", ex.getMessage()));
         return ResponseEntity.status(HttpStatus.CONFLICT).body(detail);
     }
 
@@ -35,7 +36,7 @@ public class GlobalExceptionHandler {
         log.warn(ex.getMessage());
         ExceptionDetail detail = new ExceptionDetail();
         detail.setCode(HttpStatus.UNAUTHORIZED.value());
-        detail.setMessage(ex.getMessage());
+        detail.setMessage(I18nUtils.get("password.error", ex.getMessage()));
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(detail);
     }
 
@@ -44,7 +45,7 @@ public class GlobalExceptionHandler {
         log.warn(ex.getMessage());
         ExceptionDetail detail = new ExceptionDetail();
         detail.setCode(HttpStatus.BAD_REQUEST.value());
-        detail.setMessage(ex.getMessage());
+        detail.setMessage(I18nUtils.get("parameter.empty", ex.getMessage()));
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(detail);
     }
 
@@ -53,7 +54,7 @@ public class GlobalExceptionHandler {
         log.warn(ex.getMessage());
         ExceptionDetail detail = new ExceptionDetail();
         detail.setCode(HttpStatus.BAD_REQUEST.value());
-        detail.setMessage(ex.getMessage());
+        detail.setMessage(I18nUtils.get("parameter.null", ex.getMessage()));
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(detail);
     }
 
@@ -62,7 +63,7 @@ public class GlobalExceptionHandler {
         log.warn(ex.getMessage());
         ExceptionDetail detail = new ExceptionDetail();
         detail.setCode(HttpStatus.BAD_REQUEST.value());
-        detail.setMessage(ex.getMessage());
+        detail.setMessage(I18nUtils.get("invalid.parameter", ex.getMessage()));
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(detail);
     }
 
@@ -71,7 +72,7 @@ public class GlobalExceptionHandler {
         log.error(ex.getMessage(), ex);
         ExceptionDetail detail = new ExceptionDetail();
         detail.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
-        detail.setMessage("服务器内部错误");
+        detail.setMessage(I18nUtils.get("server.error"));
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(detail);
     }
 }
